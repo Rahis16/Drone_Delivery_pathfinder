@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="game-container">
+
+  <div class="title"><img src="{% static 'images/drone.gif' %}" alt="frone"><h1 class="game-title">Optimal Path Finder Drone Animation</h1><img src="{% static 'images/drone.gif' %}" alt="frone"></div>
+ 
+  <div class="controls">
+    <div class="grid-controls">
+      <label>Rows:</label>
+      <input type="number" id="rows" value="5" min="2" max="20">
+      <label>Cols:</label>
+      <input type="number" id="cols" value="5" min="2" max="20">
+      <button onclick="createGrid()">🎯 Create Grid</button>
+      <button onclick="resetGrid()">♻ Reset Grid</button>
+    </div>
+
+    <div class="algo-controls">
+      <label>🔍 Algorithm:</label>
+      <select id="algorithm">
+        <option value="bfs">Breadth-First Search</option>
+        <option value="dfs">Depth-First Search</option>
+        <option value="ucs">Uniform Cost Search</option>
+        <option value="astar">A* Search</option>
+        <option value="bestfirst">Best-First Search</option>
+      </select>
+      <button onclick="submitGrid()">🚀 Solve</button>
+      <button onclick="updateGridStructureView()">📘 Show Theory</button>
+    </div>
+  </div>
+
+  <div id="grid-container" class="grid"></div>
+  <img id="drone-fly" src="{% static 'images/drone.gif' %}" style="display: none;" />
+
+  <div class="legend">
+    <h4>🗂 Legend:</h4>
+    <p><strong>S</strong> - Start (Drone)</p>
+    <p><strong>G</strong> - Goal (Flag)</p>
+    <p><strong>X</strong> - Obstacle (Buildings)</p>
+    <p><strong>.</strong> - Open Path</p>
+  </div>
+
+  <h3>Theoretical Grid (Python 2D List)</h3>
+  <pre id="grid-structure"></pre>
+
+  <h3>🧠 Search Tree Visualization:</h3>
+<div id="tree-wrapper" style="width:100%; overflow-x:auto;">
+  <div id="tree-container" class="Treant"></div>
+</div>
+
+</div>
+
+<!-- Countdown Screen -->
+<div id="countdown-screen">
+  <div class="count-text" id="count-text">3</div>
+</div>
+{% endblock %}

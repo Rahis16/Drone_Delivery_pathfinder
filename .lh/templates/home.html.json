@@ -1,0 +1,118 @@
+{
+    "sourceFile": "templates/home.html",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 25,
+            "patches": [
+                {
+                    "date": 1753552135949,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1753552363621,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -28,8 +28,9 @@\n </select>\r\n \r\n <h3>Theoretical Grid (Python 2D List)</h3>\r\n <pre id=\"grid-structure\" style=\"background:#f1f1f1; padding:10px;\"></pre>\r\n+\r\n <button onclick=\"submitGrid()\">Solve</button>\r\n \r\n <div id=\"countdown-screen\">\r\n   <div class=\"count-text\" id=\"count-text\">3</div>\r\n"
+                },
+                {
+                    "date": 1753552408119,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -31,8 +31,10 @@\n <pre id=\"grid-structure\" style=\"background:#f1f1f1; padding:10px;\"></pre>\r\n \r\n <button onclick=\"submitGrid()\">Solve</button>\r\n \r\n+\r\n+\r\n <div id=\"countdown-screen\">\r\n   <div class=\"count-text\" id=\"count-text\">3</div>\r\n </div>\r\n \r\n"
+                },
+                {
+                    "date": 1753552413896,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -31,10 +31,10 @@\n <pre id=\"grid-structure\" style=\"background:#f1f1f1; padding:10px;\"></pre>\r\n \r\n <button onclick=\"submitGrid()\">Solve</button>\r\n \r\n+<button on></button>\r\n \r\n-\r\n <div id=\"countdown-screen\">\r\n   <div class=\"count-text\" id=\"count-text\">3</div>\r\n </div>\r\n \r\n"
+                },
+                {
+                    "date": 1753552419098,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -31,9 +31,9 @@\n <pre id=\"grid-structure\" style=\"background:#f1f1f1; padding:10px;\"></pre>\r\n \r\n <button onclick=\"submitGrid()\">Solve</button>\r\n \r\n-<button on></button>\r\n+<button onclick=\"updateGridStructureView()\"></button>\r\n \r\n <div id=\"countdown-screen\">\r\n   <div class=\"count-text\" id=\"count-text\">3</div>\r\n </div>\r\n"
+                },
+                {
+                    "date": 1753552424801,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -31,9 +31,9 @@\n <pre id=\"grid-structure\" style=\"background:#f1f1f1; padding:10px;\"></pre>\r\n \r\n <button onclick=\"submitGrid()\">Solve</button>\r\n \r\n-<button onclick=\"updateGridStructureView()\"></button>\r\n+<button onclick=\"updateGridStructureView()\">show the</button>\r\n \r\n <div id=\"countdown-screen\">\r\n   <div class=\"count-text\" id=\"count-text\">3</div>\r\n </div>\r\n"
+                },
+                {
+                    "date": 1753552693146,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -31,10 +31,18 @@\n <pre id=\"grid-structure\" style=\"background:#f1f1f1; padding:10px;\"></pre>\r\n \r\n <button onclick=\"submitGrid()\">Solve</button>\r\n \r\n-<button onclick=\"updateGridStructureView()\">show the</button>\r\n+<button onclick=\"updateGridStructureView()\">show theory</button>\r\n \r\n+<div class=\"legend\">\r\n+  <h4>🗂 Legend:</h4>\r\n+  <p><strong>S:</strong> Start (Drone)</p>\r\n+  <p><strong>G:</strong> Goal (Flag)</p>\r\n+  <p><strong>X:</strong> Obstacle (Blocked)</p>\r\n+  <p><strong>.</strong> Open Path</p>\r\n+</div>\r\n+\r\n <div id=\"countdown-screen\">\r\n   <div class=\"count-text\" id=\"count-text\">3</div>\r\n </div>\r\n \r\n"
+                },
+                {
+                    "date": 1753552870273,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,49 +1,53 @@\n-\r\n {% extends \"base.html\" %}\r\n {% load static %}\r\n \r\n {% block content %}\r\n+<div class=\"game-container\">\r\n \r\n-<h2>Drone Pathfinding Grid Editor</h2>\r\n+  <h1 class=\"game-title\">🚁 Drone Delivery Pathfinding</h1>\r\n \r\n-<!-- Grid Configuration -->\r\n-<label for=\"rows\">Rows:</label>\r\n-<input type=\"number\" id=\"rows\" value=\"5\" min=\"2\" max=\"20\">\r\n-<label for=\"cols\">Cols:</label>\r\n-<input type=\"number\" id=\"cols\" value=\"5\" min=\"2\" max=\"20\">\r\n-<button onclick=\"createGrid()\">Create Grid</button>\r\n-<button onclick=\"resetGrid()\">Reset Grid</button>\r\n+  <div class=\"controls\">\r\n+    <div class=\"grid-controls\">\r\n+      <label>Rows:</label>\r\n+      <input type=\"number\" id=\"rows\" value=\"5\" min=\"2\" max=\"20\">\r\n+      <label>Cols:</label>\r\n+      <input type=\"number\" id=\"cols\" value=\"5\" min=\"2\" max=\"20\">\r\n+      <button onclick=\"createGrid()\">🎯 Create Grid</button>\r\n+      <button onclick=\"resetGrid()\">♻ Reset Grid</button>\r\n+    </div>\r\n \r\n-<!-- Grid Visual -->\r\n-<div id=\"grid-container\" class=\"grid\"></div>\r\n-<img id=\"drone-fly\" src=\"{% static 'images/drone.gif' %}\" style=\"display: none;\" />\r\n+    <div class=\"algo-controls\">\r\n+      <label>🔍 Algorithm:</label>\r\n+      <select id=\"algorithm\">\r\n+        <option value=\"bfs\">Breadth-First Search</option>\r\n+        <option value=\"dfs\">Depth-First Search</option>\r\n+        <option value=\"ucs\">Uniform Cost Search</option>\r\n+        <option value=\"astar\">A* Search</option>\r\n+        <option value=\"bestfirst\">Best-First Search</option>\r\n+      </select>\r\n+      <button onclick=\"submitGrid()\">🚀 Solve</button>\r\n+      <button onclick=\"updateGridStructureView()\">📘 Show Theory</button>\r\n+    </div>\r\n+  </div>\r\n \r\n-<!-- Algorithm Selector -->\r\n-<select id=\"algorithm\">\r\n-  <option value=\"bfs\">Breadth-First Search</option>\r\n-  <option value=\"dfs\">Depth-First Search</option>\r\n-  <option value=\"ucs\">Uniform Cost Search</option>\r\n\\ No newline at end of file\n-  <option value=\"astar\">A* Search</option>\r\n-  <option value=\"bestfirst\">Best-First Search</option>\r\n-</select>\r\n+  <div id=\"grid-container\" class=\"grid\"></div>\r\n+  <img id=\"drone-fly\" src=\"{% static 'images/drone.gif' %}\" style=\"display: none;\" />\r\n \r\n-<h3>Theoretical Grid (Python 2D List)</h3>\r\n-<pre id=\"grid-structure\" style=\"background:#f1f1f1; padding:10px;\"></pre>\r\n+  <div class=\"legend\">\r\n+    <h4>🗂 Legend:</h4>\r\n+    <p><strong>S</strong> - Start (Drone)</p>\r\n+    <p><strong>G</strong> - Goal (Flag)</p>\r\n+    <p><strong>X</strong> - Obstacle (Blocked)</p>\r\n+    <p><strong>.</strong> - Open Path</p>\r\n+  </div>\r\n \r\n-<button onclick=\"submitGrid()\">Solve</button>\r\n+  <h3>Theoretical Grid (Python 2D List)</h3>\r\n+  <pre id=\"grid-structure\"></pre>\r\n \r\n-<button onclick=\"updateGridStructureView()\">show theory</button>\r\n-\r\n-<div class=\"legend\">\r\n-  <h4>🗂 Legend:</h4>\r\n-  <p><strong>S:</strong> Start (Drone)</p>\r\n-  <p><strong>G:</strong> Goal (Flag)</p>\r\n-  <p><strong>X:</strong> Obstacle (Blocked)</p>\r\n-  <p><strong>.</strong> Open Path</p>\r\n </div>\r\n \r\n+<!-- Countdown Screen -->\r\n <div id=\"countdown-screen\">\r\n   <div class=\"count-text\" id=\"count-text\">3</div>\r\n </div>\r\n-\r\n-{% endblock %}\n+{% endblock %}\r\n"
+                },
+                {
+                    "date": 1753553898470,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -43,10 +43,15 @@\n \r\n   <h3>Theoretical Grid (Python 2D List)</h3>\r\n   <pre id=\"grid-structure\"></pre>\r\n \r\n+  <h3>🧠 Search Tree Visualization (Treant.js)</h3>\r\n+<div id=\"tree-wrapper\" style=\"width:100%; overflow-x:auto;\">\r\n+  <div id=\"tree-container\" class=\"Treant\"></div>\r\n </div>\r\n \r\n+</div>\r\n+\r\n <!-- Countdown Screen -->\r\n <div id=\"countdown-screen\">\r\n   <div class=\"count-text\" id=\"count-text\">3</div>\r\n </div>\r\n"
+                },
+                {
+                    "date": 1753556743753,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -36,9 +36,9 @@\n   <div class=\"legend\">\r\n     <h4>🗂 Legend:</h4>\r\n     <p><strong>S</strong> - Start (Drone)</p>\r\n     <p><strong>G</strong> - Goal (Flag)</p>\r\n-    <p><strong>X</strong> - Obstacle (Blocked)</p>\r\n+    <p><strong>X</strong> - Obstacle ()</p>\r\n     <p><strong>.</strong> - Open Path</p>\r\n   </div>\r\n \r\n   <h3>Theoretical Grid (Python 2D List)</h3>\r\n"
+                },
+                {
+                    "date": 1753556748900,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -36,9 +36,9 @@\n   <div class=\"legend\">\r\n     <h4>🗂 Legend:</h4>\r\n     <p><strong>S</strong> - Start (Drone)</p>\r\n     <p><strong>G</strong> - Goal (Flag)</p>\r\n-    <p><strong>X</strong> - Obstacle ()</p>\r\n+    <p><strong>X</strong> - Obstacle (Buildings)</p>\r\n     <p><strong>.</strong> - Open Path</p>\r\n   </div>\r\n \r\n   <h3>Theoretical Grid (Python 2D List)</h3>\r\n"
+                },
+                {
+                    "date": 1753556813731,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -43,9 +43,9 @@\n \r\n   <h3>Theoretical Grid (Python 2D List)</h3>\r\n   <pre id=\"grid-structure\"></pre>\r\n \r\n-  <h3>🧠 Search Tree Visualization (Treant.js)</h3>\r\n+  <h3>🧠 Search Tree Visualization:</h3>\r\n <div id=\"tree-wrapper\" style=\"width:100%; overflow-x:auto;\">\r\n   <div id=\"tree-container\" class=\"Treant\"></div>\r\n </div>\r\n \r\n"
+                },
+                {
+                    "date": 1753557163914,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n \r\n {% block content %}\r\n <div class=\"game-container\">\r\n \r\n-  <h1 class=\"game-title\">🚁 Drone Delivery Pathfinding</h1>\r\n+  <h1 class=\"game-title\">Drone Delivery Pathfinding</h1>\r\n \r\n   <div class=\"controls\">\r\n     <div class=\"grid-controls\">\r\n       <label>Rows:</label>\r\n"
+                },
+                {
+                    "date": 1753557175931,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,8 +4,9 @@\n {% block content %}\r\n <div class=\"game-container\">\r\n \r\n   <h1 class=\"game-title\">Drone Delivery Pathfinding</h1>\r\n+  \r\n \r\n   <div class=\"controls\">\r\n     <div class=\"grid-controls\">\r\n       <label>Rows:</label>\r\n"
+                },
+                {
+                    "date": 1753557183023,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,9 @@\n {% block content %}\r\n <div class=\"game-container\">\r\n \r\n   <h1 class=\"game-title\">Drone Delivery Pathfinding</h1>\r\n-  \r\n+  div\r\n \r\n   <div class=\"controls\">\r\n     <div class=\"grid-controls\">\r\n       <label>Rows:</label>\r\n"
+                },
+                {
+                    "date": 1753557189606,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,9 @@\n {% block content %}\r\n <div class=\"game-container\">\r\n \r\n   <h1 class=\"game-title\">Drone Delivery Pathfinding</h1>\r\n-  div\r\n+  .image\r\n \r\n   <div class=\"controls\">\r\n     <div class=\"grid-controls\">\r\n       <label>Rows:</label>\r\n"
+                },
+                {
+                    "date": 1753557195937,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,9 @@\n {% block content %}\r\n <div class=\"game-container\">\r\n \r\n   <h1 class=\"game-title\">Drone Delivery Pathfinding</h1>\r\n-  .image\r\n+  <div class=\"image\"><img src=\"stat\" alt=\"\"></div>\r\n \r\n   <div class=\"controls\">\r\n     <div class=\"grid-controls\">\r\n       <label>Rows:</label>\r\n"
+                },
+                {
+                    "date": 1753557207992,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,9 @@\n {% block content %}\r\n <div class=\"game-container\">\r\n \r\n   <h1 class=\"game-title\">Drone Delivery Pathfinding</h1>\r\n-  <div class=\"image\"><img src=\"stat\" alt=\"\"></div>\r\n+  <div class=\"image\"><img src=\"{% static 'images/drone.gif' %}\" alt=\"\"></div>\r\n \r\n   <div class=\"controls\">\r\n     <div class=\"grid-controls\">\r\n       <label>Rows:</label>\r\n"
+                },
+                {
+                    "date": 1753557467675,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,9 @@\n {% block content %}\r\n <div class=\"game-container\">\r\n \r\n   <h1 class=\"game-title\">Drone Delivery Pathfinding</h1>\r\n-  <div class=\"image\"><img src=\"{% static 'images/drone.gif' %}\" alt=\"\"></div>\r\n+  <div class=\"image\"></div>\r\n \r\n   <div class=\"controls\">\r\n     <div class=\"grid-controls\">\r\n       <label>Rows:</label>\r\n"
+                },
+                {
+                    "date": 1753557474585,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,11 +3,10 @@\n \r\n {% block content %}\r\n <div class=\"game-container\">\r\n \r\n-  <h1 class=\"game-title\">Drone Delivery Pathfinding</h1>\r\n-  <div class=\"image\"></div>\r\n-\r\n+  <img src=\"{% static 'images/drone.gif' %}\" alt=\"frone\"><h1 class=\"game-title\">Drone Delivery Pathfinding</h1>\r\n+ \r\n   <div class=\"controls\">\r\n     <div class=\"grid-controls\">\r\n       <label>Rows:</label>\r\n       <input type=\"number\" id=\"rows\" value=\"5\" min=\"2\" max=\"20\">\r\n"
+                },
+                {
+                    "date": 1753557495002,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n \r\n {% block content %}\r\n <div class=\"game-container\">\r\n \r\n-  <img src=\"{% static 'images/drone.gif' %}\" alt=\"frone\"><h1 class=\"game-title\">Drone Delivery Pathfinding</h1>\r\n+  \r\n  \r\n   <div class=\"controls\">\r\n     <div class=\"grid-controls\">\r\n       <label>Rows:</label>\r\n"
+                },
+                {
+                    "date": 1753557500212,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n \r\n {% block content %}\r\n <div class=\"game-container\">\r\n \r\n-  \r\n+  <div class=\"title\"></div>\r\n  \r\n   <div class=\"controls\">\r\n     <div class=\"grid-controls\">\r\n       <label>Rows:</label>\r\n"
+                },
+                {
+                    "date": 1753557641963,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n \r\n {% block content %}\r\n <div class=\"game-container\">\r\n \r\n-  <div class=\"title\"></div>\r\n+  <div class=\"title\"><img src=\"{% static 'images/drone.gif' %}\" alt=\"frone\"><h1 class=\"game-title\">Optimal Path </h1></div>\r\n  \r\n   <div class=\"controls\">\r\n     <div class=\"grid-controls\">\r\n       <label>Rows:</label>\r\n"
+                },
+                {
+                    "date": 1753557647621,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n \r\n {% block content %}\r\n <div class=\"game-container\">\r\n \r\n-  <div class=\"title\"><img src=\"{% static 'images/drone.gif' %}\" alt=\"frone\"><h1 class=\"game-title\">Optimal Path </h1></div>\r\n+  <div class=\"title\"><img src=\"{% static 'images/drone.gif' %}\" alt=\"frone\"><h1 class=\"game-title\">Optimal Path Finder Drone Animation</h1></div>\r\n  \r\n   <div class=\"controls\">\r\n     <div class=\"grid-controls\">\r\n       <label>Rows:</label>\r\n"
+                },
+                {
+                    "date": 1753557681844,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n \r\n {% block content %}\r\n <div class=\"game-container\">\r\n \r\n-  <div class=\"title\"><img src=\"{% static 'images/drone.gif' %}\" alt=\"frone\"><h1 class=\"game-title\">Optimal Path Finder Drone Animation</h1></div>\r\n+  <div class=\"title\"><img src=\"{% static 'images/drone.gif' %}\" alt=\"frone\"><h1 class=\"game-title\">Optimal Path Finder Drone Animation</h1><img src=\"{% static 'images/drone.gif' %}\" alt=\"frone\"></div>\r\n  \r\n   <div class=\"controls\">\r\n     <div class=\"grid-controls\">\r\n       <label>Rows:</label>\r\n"
+                },
+                {
+                    "date": 1753557905757,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n \r\n {% block content %}\r\n <div class=\"game-container\">\r\n \r\n-  <div class=\"title\"><img src=\"{% static 'images/drone.gif' %}\" alt=\"frone\"><h1 class=\"game-title\">Optimal Path Finder Drone Animation</h1><img src=\"{% static 'images/drone.gif' %}\" alt=\"frone\"></div>\r\n+  <div class=\"title\"><img src=\"{% static 'images/drone.gif' %}\" alt=\"frone\"><h1 class=\"game-title\">Optimal Path Finder Drone Animation</h1></div>\r\n  \r\n   <div class=\"controls\">\r\n     <div class=\"grid-controls\">\r\n       <label>Rows:</label>\r\n"
+                }
+            ],
+            "date": 1753552135949,
+            "name": "Commit-0",
+            "content": "\r\n{% extends \"base.html\" %}\r\n{% load static %}\r\n\r\n{% block content %}\r\n\r\n<h2>Drone Pathfinding Grid Editor</h2>\r\n\r\n<!-- Grid Configuration -->\r\n<label for=\"rows\">Rows:</label>\r\n<input type=\"number\" id=\"rows\" value=\"5\" min=\"2\" max=\"20\">\r\n<label for=\"cols\">Cols:</label>\r\n<input type=\"number\" id=\"cols\" value=\"5\" min=\"2\" max=\"20\">\r\n<button onclick=\"createGrid()\">Create Grid</button>\r\n<button onclick=\"resetGrid()\">Reset Grid</button>\r\n\r\n<!-- Grid Visual -->\r\n<div id=\"grid-container\" class=\"grid\"></div>\r\n<img id=\"drone-fly\" src=\"{% static 'images/drone.gif' %}\" style=\"display: none;\" />\r\n\r\n<!-- Algorithm Selector -->\r\n<select id=\"algorithm\">\r\n  <option value=\"bfs\">Breadth-First Search</option>\r\n  <option value=\"dfs\">Depth-First Search</option>\r\n  <option value=\"ucs\">Uniform Cost Search</option>\r\n  <option value=\"astar\">A* Search</option>\r\n  <option value=\"bestfirst\">Best-First Search</option>\r\n</select>\r\n\r\n<h3>Theoretical Grid (Python 2D List)</h3>\r\n<pre id=\"grid-structure\" style=\"background:#f1f1f1; padding:10px;\"></pre>\r\n<button onclick=\"submitGrid()\">Solve</button>\r\n\r\n<div id=\"countdown-screen\">\r\n  <div class=\"count-text\" id=\"count-text\">3</div>\r\n</div>\r\n\r\n{% endblock %}"
+        }
+    ]
+}

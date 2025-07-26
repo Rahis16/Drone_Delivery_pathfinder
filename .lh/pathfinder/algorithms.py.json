@@ -1,0 +1,90 @@
+{
+    "sourceFile": "pathfinder/algorithms.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 18,
+            "patches": [
+                {
+                    "date": 1753551784194,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1753554615144,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -150,5 +150,16 @@\n         path.append([curr[0], curr[1]])\r\n         curr = parent[curr]\r\n     path.append([start[0], start[1]])\r\n     path.reverse()\r\n-    return path\n\\ No newline at end of file\n+    return path\r\n+\r\n+\r\n+\r\n+def build_search_tree(start, parent_map):\r\n+    def build(node):\r\n+        children = [child for child, parent in parent_map.items() if parent == node]\r\n+        return {\r\n+            \"text\": {\"name\": f\"{node}\"},\r\n+            \"children\": [build(child) for child in children]\r\n+        }\r\n+    return build(start)\r\n"
+                },
+                {
+                    "date": 1753554642097,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,8 +22,9 @@\n                 path.append(list(curr))\r\n                 curr = parent[curr]\r\n             path.append(list(start))\r\n             path.reverse()\r\n+            tree = build_search_tree(start, parent)\r\n             return path\r\n \r\n         for dr, dc in directions:\r\n             r, c = curr[0] + dr, curr[1] + dc\r\n"
+                },
+                {
+                    "date": 1753554648175,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,9 +23,9 @@\n                 curr = parent[curr]\r\n             path.append(list(start))\r\n             path.reverse()\r\n             tree = build_search_tree(start, parent)\r\n-            return path\r\n+            return , tree\r\n \r\n         for dr, dc in directions:\r\n             r, c = curr[0] + dr, curr[1] + dc\r\n             if 0 <= r < rows and 0 <= c < cols and not visited[r][c]:\r\n"
+                },
+                {
+                    "date": 1753554653288,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,10 +23,11 @@\n                 curr = parent[curr]\r\n             path.append(list(start))\r\n             path.reverse()\r\n             tree = build_search_tree(start, parent)\r\n-            return , tree\r\n+            return path, tree\r\n \r\n+\r\n         for dr, dc in directions:\r\n             r, c = curr[0] + dr, curr[1] + dc\r\n             if 0 <= r < rows and 0 <= c < cols and not visited[r][c]:\r\n                 if grid[r][c] != 'X':  # Don't go through obstacles\r\n"
+                },
+                {
+                    "date": 1753554740295,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -48,8 +48,9 @@\n \r\n     while stack:\r\n         curr = stack.pop()\r\n         if curr == goal:\r\n+            tree = build_search_tree(start, parent)\r\n             return reconstruct_path(parent, start, goal)\r\n \r\n         for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:\r\n             r, c = curr[0]+dr, curr[1]+dc\r\n"
+                },
+                {
+                    "date": 1753554745375,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -49,9 +49,9 @@\n     while stack:\r\n         curr = stack.pop()\r\n         if curr == goal:\r\n             tree = build_search_tree(start, parent)\r\n-            return reconstruct_path(parent, start, goal)\r\n+            return reconstruct_path(parent, start, goal), tree\r\n \r\n         for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:\r\n             r, c = curr[0]+dr, curr[1]+dc\r\n             if 0<=r<rows and 0<=c<cols and not visited[r][c] and grid[r][c] != 'X':\r\n"
+                },
+                {
+                    "date": 1753554751488,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -57,9 +57,9 @@\n             if 0<=r<rows and 0<=c<cols and not visited[r][c] and grid[r][c] != 'X':\r\n                 visited[r][c] = True\r\n                 parent[(r, c)] = curr\r\n                 stack.append((r, c))\r\n-    return None\r\n+    return None, None\r\n \r\n \r\n \r\n def ucs(grid, start, goal):\r\n"
+                },
+                {
+                    "date": 1753554764138,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -75,8 +75,9 @@\n             continue\r\n         visited.add(curr)\r\n \r\n         if curr == goal:\r\n+            tree = build_search_tree(start, parent)\r\n             return reconstruct_path(parent, start, goal)\r\n \r\n         for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:\r\n             r, c = curr[0]+dr, curr[1]+dc\r\n"
+                },
+                {
+                    "date": 1753554774165,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -76,9 +76,9 @@\n         visited.add(curr)\r\n \r\n         if curr == goal:\r\n             tree = build_search_tree(start, parent)\r\n-            return reconstruct_path(parent, start, goal)\r\n+            return reconstruct_path(parent, start, goal), tree\r\n \r\n         for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:\r\n             r, c = curr[0]+dr, curr[1]+dc\r\n             next_cell = (r, c)\r\n@@ -87,9 +87,9 @@\n                 if next_cell not in cost or new_cost < cost[next_cell]:\r\n                     cost[next_cell] = new_cost\r\n                     parent[next_cell] = curr\r\n                     heapq.heappush(heap, (new_cost, next_cell))\r\n-    return None\r\n+    return None, None\r\n \r\n \r\n \r\n def heuristic(a, b):\r\n"
+                },
+                {
+                    "date": 1753554788882,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -104,8 +104,9 @@\n \r\n     while heap:\r\n         _, curr = heapq.heappop(heap)\r\n         if curr == goal:\r\n+            tree = build_search_tree(start, parent)\r\n             return reconstruct_path(parent, start, goal)\r\n \r\n         for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:\r\n             r, c = curr[0]+dr, curr[1]+dc\r\n"
+                },
+                {
+                    "date": 1753554793924,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -105,9 +105,9 @@\n     while heap:\r\n         _, curr = heapq.heappop(heap)\r\n         if curr == goal:\r\n             tree = build_search_tree(start, parent)\r\n-            return reconstruct_path(parent, start, goal)\r\n+            return reconstruct_path(parent, start, goal), tree\r\n \r\n         for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:\r\n             r, c = curr[0]+dr, curr[1]+dc\r\n             neighbor = (r, c)\r\n"
+                },
+                {
+                    "date": 1753554808760,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -117,9 +117,9 @@\n                     parent[neighbor] = curr\r\n                     g_cost[neighbor] = tentative_g\r\n                     f_cost[neighbor] = tentative_g + heuristic(neighbor, goal)\r\n                     heapq.heappush(heap, (f_cost[neighbor], neighbor))\r\n-    return None\r\n+    return None, None\r\n \r\n \r\n \r\n \r\n@@ -131,8 +131,9 @@\n \r\n     while heap:\r\n         _, curr = heapq.heappop(heap)\r\n         if curr == goal:\r\n+            tree = build_search_tree(start, parent)\r\n             return reconstruct_path(parent, start, goal)\r\n \r\n         visited.add(curr)\r\n \r\n"
+                },
+                {
+                    "date": 1753554820505,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -132,9 +132,9 @@\n     while heap:\r\n         _, curr = heapq.heappop(heap)\r\n         if curr == goal:\r\n             tree = build_search_tree(start, parent)\r\n-            return reconstruct_path(parent, start, goal)\r\n+            return reconstruct_path(parent, start, goal), tree\r\n \r\n         visited.add(curr)\r\n \r\n         for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:\r\n"
+                },
+                {
+                    "date": 1753554829353,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -143,13 +143,15 @@\n             if 0<=r<rows and 0<=c<cols and grid[r][c] != 'X' and neighbor not in visited:\r\n                 parent[neighbor] = curr\r\n                 heapq.heappush(heap, (heuristic(neighbor, goal), neighbor))\r\n                 visited.add(neighbor)\r\n-    return None\r\n+    return None, None\r\n \r\n \r\n \r\n \r\n+\r\n+\r\n def reconstruct_path(parent, start, goal):\r\n     path = []\r\n     curr = goal\r\n     while curr != start:\r\n"
+                },
+                {
+                    "date": 1753554847150,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -131,10 +131,9 @@\n \r\n     while heap:\r\n         _, curr = heapq.heappop(heap)\r\n         if curr == goal:\r\n-            tree = build_search_tree(start, parent)\r\n-            return reconstruct_path(parent, start, goal), tree\r\n+            return reconstruct_path(parent, start, goal)\r\n \r\n         visited.add(curr)\r\n \r\n         for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:\r\n@@ -143,15 +142,13 @@\n             if 0<=r<rows and 0<=c<cols and grid[r][c] != 'X' and neighbor not in visited:\r\n                 parent[neighbor] = curr\r\n                 heapq.heappush(heap, (heuristic(neighbor, goal), neighbor))\r\n                 visited.add(neighbor)\r\n-    return None, None\r\n+    return None\r\n \r\n \r\n \r\n \r\n-\r\n-\r\n def reconstruct_path(parent, start, goal):\r\n     path = []\r\n     curr = goal\r\n     while curr != start:\r\n"
+                },
+                {
+                    "date": 1753554852171,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -131,8 +131,9 @@\n \r\n     while heap:\r\n         _, curr = heapq.heappop(heap)\r\n         if curr == goal:\r\n+            tree = build_search_tree(start, parent)\r\n             return reconstruct_path(parent, start, goal)\r\n \r\n         visited.add(curr)\r\n \r\n"
+                },
+                {
+                    "date": 1753554861839,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -132,9 +132,9 @@\n     while heap:\r\n         _, curr = heapq.heappop(heap)\r\n         if curr == goal:\r\n             tree = build_search_tree(start, parent)\r\n-            return reconstruct_path(parent, start, goal)\r\n+            return reconstruct_path(parent, start, goal), tree\r\n \r\n         visited.add(curr)\r\n \r\n         for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:\r\n@@ -143,13 +143,15 @@\n             if 0<=r<rows and 0<=c<cols and grid[r][c] != 'X' and neighbor not in visited:\r\n                 parent[neighbor] = curr\r\n                 heapq.heappush(heap, (heuristic(neighbor, goal), neighbor))\r\n                 visited.add(neighbor)\r\n-    return None\r\n+    return None, None\r\n \r\n \r\n \r\n \r\n+\r\n+\r\n def reconstruct_path(parent, start, goal):\r\n     path = []\r\n     curr = goal\r\n     while curr != start:\r\n"
+                },
+                {
+                    "date": 1753556319229,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -147,11 +147,8 @@\n     return None, None\r\n \r\n \r\n \r\n-\r\n-\r\n-\r\n def reconstruct_path(parent, start, goal):\r\n     path = []\r\n     curr = goal\r\n     while curr != start:\r\n"
+                }
+            ],
+            "date": 1753551784194,
+            "name": "Commit-0",
+            "content": "from  collections import deque\r\nimport heapq\r\n\r\n#Breadth-First Search\r\ndef bfs(grid, start, goal):\r\n    rows = len(grid)\r\n    cols = len(grid[0])\r\n    visited = [[False for _ in range(cols)] for _ in range(rows)]\r\n    parent = {}\r\n\r\n    directions = [(-1,0),(1,0),(0,-1),(0,1)]  # Up, Down, Left, Right\r\n    queue = deque()\r\n    queue.append(start)\r\n    visited[start[0]][start[1]] = True\r\n\r\n    while queue:\r\n        curr = queue.popleft()\r\n        if curr == goal:\r\n            # Reconstruct path from goal to start\r\n            path = []\r\n            while curr != start:\r\n                path.append(list(curr))\r\n                curr = parent[curr]\r\n            path.append(list(start))\r\n            path.reverse()\r\n            return path\r\n\r\n        for dr, dc in directions:\r\n            r, c = curr[0] + dr, curr[1] + dc\r\n            if 0 <= r < rows and 0 <= c < cols and not visited[r][c]:\r\n                if grid[r][c] != 'X':  # Don't go through obstacles\r\n                    queue.append((r, c))\r\n                    visited[r][c] = True\r\n                    parent[(r, c)] = curr\r\n\r\n    return None  # No path found\r\n\r\n\r\n\r\ndef dfs(grid, start, goal):\r\n    rows, cols = len(grid), len(grid[0])\r\n    visited = [[False]*cols for _ in range(rows)]\r\n    parent = {}\r\n    stack = [start]\r\n    visited[start[0]][start[1]] = True\r\n\r\n    while stack:\r\n        curr = stack.pop()\r\n        if curr == goal:\r\n            return reconstruct_path(parent, start, goal)\r\n\r\n        for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:\r\n            r, c = curr[0]+dr, curr[1]+dc\r\n            if 0<=r<rows and 0<=c<cols and not visited[r][c] and grid[r][c] != 'X':\r\n                visited[r][c] = True\r\n                parent[(r, c)] = curr\r\n                stack.append((r, c))\r\n    return None\r\n\r\n\r\n\r\ndef ucs(grid, start, goal):\r\n    rows, cols = len(grid), len(grid[0])\r\n    cost = {start: 0}\r\n    parent = {}\r\n    visited = set()\r\n    heap = [(0, start)]\r\n\r\n    while heap:\r\n        curr_cost, curr = heapq.heappop(heap)\r\n        if curr in visited:\r\n            continue\r\n        visited.add(curr)\r\n\r\n        if curr == goal:\r\n            return reconstruct_path(parent, start, goal)\r\n\r\n        for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:\r\n            r, c = curr[0]+dr, curr[1]+dc\r\n            next_cell = (r, c)\r\n            if 0<=r<rows and 0<=c<cols and grid[r][c] != 'X':\r\n                new_cost = curr_cost + 1  # static cost, make dynamic if needed\r\n                if next_cell not in cost or new_cost < cost[next_cell]:\r\n                    cost[next_cell] = new_cost\r\n                    parent[next_cell] = curr\r\n                    heapq.heappush(heap, (new_cost, next_cell))\r\n    return None\r\n\r\n\r\n\r\ndef heuristic(a, b):\r\n    return abs(a[0] - b[0]) + abs(a[1] - b[1])\r\n\r\ndef astar(grid, start, goal):\r\n    rows, cols = len(grid), len(grid[0])\r\n    g_cost = {start: 0}\r\n    f_cost = {start: heuristic(start, goal)}\r\n    parent = {}\r\n    heap = [(f_cost[start], start)]\r\n\r\n    while heap:\r\n        _, curr = heapq.heappop(heap)\r\n        if curr == goal:\r\n            return reconstruct_path(parent, start, goal)\r\n\r\n        for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:\r\n            r, c = curr[0]+dr, curr[1]+dc\r\n            neighbor = (r, c)\r\n            if 0<=r<rows and 0<=c<cols and grid[r][c] != 'X':\r\n                tentative_g = g_cost[curr] + 1\r\n                if neighbor not in g_cost or tentative_g < g_cost[neighbor]:\r\n                    parent[neighbor] = curr\r\n                    g_cost[neighbor] = tentative_g\r\n                    f_cost[neighbor] = tentative_g + heuristic(neighbor, goal)\r\n                    heapq.heappush(heap, (f_cost[neighbor], neighbor))\r\n    return None\r\n\r\n\r\n\r\n\r\ndef best_first(grid, start, goal):\r\n    rows, cols = len(grid), len(grid[0])\r\n    visited = set()\r\n    parent = {}\r\n    heap = [(heuristic(start, goal), start)]\r\n\r\n    while heap:\r\n        _, curr = heapq.heappop(heap)\r\n        if curr == goal:\r\n            return reconstruct_path(parent, start, goal)\r\n\r\n        visited.add(curr)\r\n\r\n        for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:\r\n            r, c = curr[0]+dr, curr[1]+dc\r\n            neighbor = (r, c)\r\n            if 0<=r<rows and 0<=c<cols and grid[r][c] != 'X' and neighbor not in visited:\r\n                parent[neighbor] = curr\r\n                heapq.heappush(heap, (heuristic(neighbor, goal), neighbor))\r\n                visited.add(neighbor)\r\n    return None\r\n\r\n\r\n\r\n\r\ndef reconstruct_path(parent, start, goal):\r\n    path = []\r\n    curr = goal\r\n    while curr != start:\r\n        path.append([curr[0], curr[1]])\r\n        curr = parent[curr]\r\n    path.append([start[0], start[1]])\r\n    path.reverse()\r\n    return path"
+        }
+    ]
+}
