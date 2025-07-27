@@ -185,7 +185,7 @@ function moveDrone(path) {
     const interval = setInterval(() => {
         if (step >= path.length) {
             clearInterval(interval);
-            // alert("Delivery Complete ✅");
+            alert("Delivery Complete ✅");
             // 🔥 Launch confetti
             confetti({
                 particleCount: 150,
